@@ -18,12 +18,12 @@ function Cadastro() {
   });
   useEffect(() => {
     if (usuario.id !== 0) {
-      navigate("/login");
+      navigate("/");
     }
   }, [usuario]);
 
   function retornar() {
-    navigate("/login");
+    navigate("/");
   }
 
   function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
