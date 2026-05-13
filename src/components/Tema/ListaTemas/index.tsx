@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { CardTema } from "../Tema";
+
 import { useContext, useEffect, useState } from "react";
-import type Tema from "../../models/Tema";
-import { AuthContext } from "../../contexts/AuthContext";
-import { buscar } from "../../services/service";
-import { SyncLoader } from "react-spinners";
+
+import type Tema from "../../../models/Tema";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { buscar } from "../../../services/service";
+import { CardTema } from "..";
 
 export function ListaTemas() {
   const navigate = useNavigate();

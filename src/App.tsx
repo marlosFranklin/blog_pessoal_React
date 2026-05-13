@@ -5,9 +5,11 @@ import Home from "./pages/Home";
 import Cadastro from "./pages/cadastro";
 import Login from "./pages/login";
 import { AuthProvider } from "./contexts/AuthContext";
-import { ListaTemas } from "./components/ListaTemas";
-import FormTema from "./components/FormTema";
-import DeletarTema from "./components/DeletarTema";
+
+import ListaPostagens from "./components/Postagem/ListaPostagens";
+import { ListaTemas } from "./components/Tema/ListaTemas";
+import FormTema from "./components/Tema/FormTema";
+import DeletarTema from "./components/Tema/DeletarTema";
 
 function App() {
   return (
@@ -24,6 +26,7 @@ function App() {
               <Route path="/cadastrartema" element={<FormTema />} />
               <Route path="/editartema/:id" element={<FormTema />} />
               <Route path="/deletartema/:id" element={<DeletarTema />} />
+              <Route path="/postagens" element={<ListaPostagens />} />
             </Routes>
           </div>
           <Footer />

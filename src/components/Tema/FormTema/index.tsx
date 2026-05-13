@@ -7,9 +7,9 @@ import {
 } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import { AuthContext } from "../../contexts/AuthContext";
-import type Tema from "../../models/Tema";
-import { atualizar, buscar, cadastrar } from "../../services/service";
+import type Tema from "../../../models/Tema";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { atualizar, buscar, cadastrar } from "../../../services/service";
 
 function FormTema() {
   const navigate = useNavigate();
