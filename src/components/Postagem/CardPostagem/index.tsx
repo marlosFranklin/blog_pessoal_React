@@ -8,11 +8,11 @@ interface CardPostagensProps {
 function CardPostagem({ postagem }: CardPostagensProps) {
   return (
     <div
-      className="border-slate-900 border 
+      className="border-slate-900 
             flex flex-col rounded overflow-hidden justify-between"
     >
-      <div>
-        <div className="flex w-full bg-indigo-400 py-2 px-4 items-center gap-4">
+      <div className="  bg-gray-900">
+        <div className="flex w-full  bg-gray-900 py-2 px-4 items-center gap-4 text-white">
           <img
             src={postagem.usuario?.foto}
             className="h-12 rounded-full"
@@ -24,9 +24,9 @@ function CardPostagem({ postagem }: CardPostagensProps) {
         </div>
         <div className="p-4 ">
           <h4 className="text-lg font-semibold uppercase">{postagem.title}</h4>
-          <p>{postagem.texto}</p>
-          <p>Tema: {postagem.tema?.descricao}</p>
-          <p>
+          <p className="text-white">{postagem.texto}</p>
+          <p className=" text-white">Tema: {postagem.tema?.descricao}</p>
+          <p className="text-white">
             Data:{" "}
             {new Intl.DateTimeFormat("pt-BR", {
               dateStyle: "full",
@@ -38,15 +38,15 @@ function CardPostagem({ postagem }: CardPostagensProps) {
       <div className="flex">
         <Link
           to={`/editarpostagem/${postagem.id}`}
-          className="w-full text-white bg-indigo-400 
-                    hover:bg-indigo-800 flex items-center justify-center py-2"
+          className="w-full text-white bg-gray-800
+                    hover:bg-gray-400 flex items-center justify-center py-2"
         >
           <button>Editar</button>
         </Link>
         <Link
           to={`/deletarpostagem/${postagem.id}`}
-          className="text-white bg-red-400 
-                    hover:bg-red-700 w-full flex items-center justify-center"
+          className="text-white bg-red-700
+                    hover:bg-red-400 w-full flex items-center justify-center"
         >
           <button>Deletar</button>
         </Link>

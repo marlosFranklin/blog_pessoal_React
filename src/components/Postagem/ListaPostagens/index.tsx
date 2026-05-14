@@ -51,7 +51,7 @@ function ListaPostagens() {
         </div>
       )}
 
-      <div className="flex justify-center w-full my-4">
+      <div className="flex justify-center w-full my-4 ">
         <div className="container flex flex-col">
           {!isLoading && postagens.length === 0 && (
             <span className="text-3xl text-center my-8">

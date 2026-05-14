@@ -12,6 +12,7 @@ import FormTema from "./components/Tema/FormTema";
 import DeletarTema from "./components/Tema/DeletarTema";
 import FormPostagem from "./components/Postagem/FormPostagem";
 import DeletarPostagem from "./components/Postagem/DeletarPostagem";
+import Perfil from "./pages/perfil/Perfil";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <NavBar />
-          <div className=" min-h-[80vh] ">
+          <div className=" min-h-[80vh] bg-gray-900 ">
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/home" element={<Home />} />
@@ -35,6 +36,7 @@ function App() {
                 path="/deletarpostagem/:id"
                 element={<DeletarPostagem />}
               />
+              <Route path="/perfil" element={<Perfil />} />
             </Routes>
           </div>
           <Footer />
