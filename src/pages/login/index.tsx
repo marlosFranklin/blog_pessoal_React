@@ -39,20 +39,22 @@ function Login() {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 h-screen place-items-center font-bold ">
+      <div className="grid grid-cols-1 lg:grid-cols-2 h-screen place-items-center font-bold bg-gray-900 ">
         <form
           className="flex justify-center items-center flex-col w-1/2 gap-4"
           onSubmit={login}
         >
-          <h2 className="text-slate-900 text-5xl ">Entrar</h2>
+          <h2 className="text-white text-5xl ">Entrar</h2>
           <div className="flex flex-col w-full">
-            <label htmlFor="usuario">Usuário</label>
+            <label htmlFor="usuario" className="text-white">
+              Usuário
+            </label>
             <input
               type="text"
               id="usuario"
               name="usuario"
               placeholder="Usuario"
-              className="border-2 border-slate-700 rounded p-2"
+              className=" placeholder:text-white border-2 border-slate-700 rounded p-2"
               value={usuarioLogin.usuario}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 atualizarEstado(e)
@@ -60,13 +62,15 @@ function Login() {
             />
           </div>
           <div className="flex flex-col w-full">
-            <label htmlFor="senha">Senha</label>
+            <label htmlFor="senha" className="text-white">
+              Senha
+            </label>
             <input
               type="password"
               id="senha"
               name="senha"
               placeholder="Senha"
-              className="border-2 border-slate-700 rounded p-2"
+              className=" placeholder:text-white border-2 border-slate-700 rounded p-2"
               value={usuarioLogin.senha}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 atualizarEstado(e)
@@ -75,8 +79,8 @@ function Login() {
           </div>
           <button
             type="submit"
-            className="rounded bg-indigo-400 flex justify-center
-                                   hover:bg-indigo-900 text-white w-1/2 py-2"
+            className="rounded bg-indigo-900 flex justify-center
+                                   hover:bg-indigo-400 text-white w-1/2 py-2 rounded-3xl"
           >
             {isLoading ? (
               <ClipLoader color="#ffffff" size={24} />
@@ -87,7 +91,7 @@ function Login() {
 
           <hr className="border-slate-800 w-full" />
 
-          <p>
+          <p className="text-white">
             Ainda não tem uma conta?{" "}
             <Link to="/cadastro" className="text-indigo-800 hover:underline">
               Cadastre-se
