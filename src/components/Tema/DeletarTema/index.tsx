@@ -5,6 +5,7 @@ import { ClipLoader } from "react-spinners";
 import type Tema from "../../../models/Tema";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { buscar, deletar } from "../../../services/service";
+import { Bounce, toast } from "react-toastify";
 
 function DeletarTema() {
   const navigate = useNavigate();
@@ -54,13 +55,32 @@ function DeletarTema() {
           Authorization: token,
         },
       });
-
-      alert("Tema deletado com sucesso");
+      toast.success("Tema deletado com sucesso", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
     } catch (error: any) {
       if (error.toString().includes("401")) {
         handleLogout();
       } else {
-        alert("Erro ao deletar o tema.");
+        toast.warn("Erro ao deletar o tema.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
       }
     }
 

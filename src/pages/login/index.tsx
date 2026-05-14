@@ -6,10 +6,9 @@ import {
   type FormEvent,
 } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 import { AuthContext } from "../../contexts/AuthContext";
 import type UsuarioLogin from "../../models/UsuarioLogin";
-import { login } from "../../services/service";
-import { ClipLoader } from "react-spinners";
 
 function Login() {
   const navigate = useNavigate();
@@ -33,10 +32,11 @@ function Login() {
     });
   }
 
-  function login(e: ChangeEvent<HTMLFormElement>) {
+  function login(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     handleLogin(usuarioLogin);
   }
+
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-2 h-screen place-items-center font-bold ">
@@ -79,7 +79,7 @@ function Login() {
                                    hover:bg-indigo-900 text-white w-1/2 py-2"
           >
             {isLoading ? (
-              <ClipLoader color="#fff" size={24} />
+              <ClipLoader color="#ffffff" size={24} />
             ) : (
               <span>Entrar</span>
             )}
@@ -88,7 +88,7 @@ function Login() {
           <hr className="border-slate-800 w-full" />
 
           <p>
-            Ainda não tem uma conta?
+            Ainda não tem uma conta?{" "}
             <Link to="/cadastro" className="text-indigo-800 hover:underline">
               Cadastre-se
             </Link>

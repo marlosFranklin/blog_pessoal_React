@@ -17,26 +17,30 @@ function Navbar() {
     <>
       <div
         className="w-full flex justify-center py-4
-                           bg-indigo-900 text-white"
+                           bg-gray-900 text-white"
       >
         <div className="container flex justify-between text-lg mx-8">
-          <Link to="/home" className="text-2xl font-bold">
+          <Link to="/home" className="text-2xl font-bold text-white">
             Blog Pessoal
           </Link>
-          <p> Bem vindo {usuario.senha}</p>
+          {/*  <p> Bem vindo {usuario.senha}</p> */}
 
           <div className="flex gap-4">
-            <Link to="/postagens" className="hover:underline">
+            <Link to="/postagens" className="hover:underline text-white">
               Postagens
             </Link>
-            <Link to="/temas" className=" hover:underline">
+            <Link to="/temas" className=" hover:underline  text-white">
               Temas
             </Link>
-            <Link to="/cadastrartema" className="hover:underline">
+            <Link to="/cadastrartema" className="hover:underline  text-white">
               Cadastrar tema
             </Link>
             Perfil
-            <Link to="" onClick={logout} className="hover:underline">
+            <Link
+              to=""
+              onClick={logout}
+              className="hover:underline  text-white"
+            >
               Sair
             </Link>
           </div>

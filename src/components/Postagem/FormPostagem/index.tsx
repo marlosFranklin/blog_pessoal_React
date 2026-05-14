@@ -11,6 +11,7 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import type Postagem from "../../../models/Postagem";
 import type Tema from "../../../models/Tema";
 import { atualizar, buscar, cadastrar } from "../../../services/service";
+import { Bounce, toast } from "react-toastify";
 
 function FormPostagem() {
   const navigate = useNavigate();
@@ -66,7 +67,18 @@ function FormPostagem() {
 
   useEffect(() => {
     if (token === "") {
-      alert("Você precisa estar logado");
+      toast.warn("Você precisa estar logado", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+
       navigate("/");
     }
   }, [token]);
@@ -111,12 +123,32 @@ function FormPostagem() {
           },
         });
 
-        alert("Postagem atualizada com sucesso");
+        toast.success("Postagem atualizada com sucesso", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
       } catch (error: any) {
         if (error.toString().includes("401")) {
           handleLogout();
         } else {
-          alert("Erro ao atualizar a Postagem");
+          toast.error("Erro ao atualizar a Postagem", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+          });
         }
       }
     } else {
@@ -126,13 +158,32 @@ function FormPostagem() {
             Authorization: token,
           },
         });
-
-        alert("Postagem cadastrada com sucesso");
+        toast.success("Postagem cadastrada com sucesso", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
       } catch (error: any) {
         if (error.toString().includes("401")) {
           handleLogout();
         } else {
-          alert("Erro ao cadastrar a Postagem");
+          toast.error("Erro ao cadastrar a Postagem", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+          });
         }
       }
     }

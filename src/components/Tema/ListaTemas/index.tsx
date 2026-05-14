@@ -40,7 +40,7 @@ export function ListaTemas() {
   }
   return (
     <>
-      <div className=" flex justify-center w-full my-4">
+      <div className=" flex justify-center w-full my-4  ">
         <div className=" container flex flex-col">
           {!isLoading && temas.length === 0 && (
             <span className="text-3xl text-center my-8">

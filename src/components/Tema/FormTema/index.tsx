@@ -10,6 +10,7 @@ import { ClipLoader } from "react-spinners";
 import type Tema from "../../../models/Tema";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { atualizar, buscar, cadastrar } from "../../../services/service";
+import { Bounce, toast } from "react-toastify";
 
 function FormTema() {
   const navigate = useNavigate();
@@ -81,7 +82,17 @@ function FormTema() {
         await cadastrar(`/temas`, tema, setTema, {
           headers: { Authorization: token },
         });
-        alert("O Tema foi cadastrado com sucesso!");
+        toast.success("🚀 Tema cadastrado com sucesso", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
       } catch (error: any) {
         if (error.toString().includes("401")) {
           handleLogout();
