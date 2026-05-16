@@ -38,7 +38,10 @@ function FormTema() {
 
   useEffect(() => {
     if (token === "") {
-      alert("Você precisa estar logado!");
+      toast.warn("Você precisa estar logado!", {
+        autoClose: 5000,
+        position: "top-right",
+      });
       navigate("/");
     }
   }, [token]);

@@ -44,18 +44,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsLoading(true);
 
     try {
-      // Faz login e atualiza o estado
       await login("/usuarios/logar", usuarioLogin, setUsuario);
 
-      // Se o serviço preencher setUsuario corretamente,
-      // você pode salvar diretamente no localStorage
-      // após receber a resposta no serviço.
-      // Alternativamente, adapte o serviço para retornar os dados.
       const usuarioAtualizado = localStorage.getItem("usuario");
 
       if (!usuarioAtualizado) {
-        // Caso seu serviço não salve automaticamente,
-        // o ideal é alterar o serviço para retornar os dados.
       }
 
       toast.success("O Usuário foi autenticado com sucesso!", {
