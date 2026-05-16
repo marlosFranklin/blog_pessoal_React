@@ -5,6 +5,7 @@ import type Postagem from "../../../models/Postagem";
 
 import { ClipLoader } from "react-spinners";
 import { buscar, deletar } from "../../../services/service";
+import { toast } from "react-toastify";
 
 function DeletarPostagem() {
   const navigate = useNavigate();
@@ -33,7 +34,10 @@ function DeletarPostagem() {
 
   useEffect(() => {
     if (token === "") {
-      alert("Você precisa estar logado");
+      toast.warn("Você precisa estar logado!", {
+        autoClose: 5000,
+        position: "top-right",
+      });
       navigate("/");
     }
   }, [token]);
@@ -54,12 +58,18 @@ function DeletarPostagem() {
         },
       });
 
-      alert("Postagem apagada com sucesso");
+      toast.success("Postagem Deletada com suceso!", {
+        autoClose: 5000,
+        position: "top-right",
+      });
     } catch (error: any) {
       if (error.toString().includes("401")) {
         handleLogout();
       } else {
-        alert("Erro ao deletar a postagem.");
+        toast.error("Erro ao deletar a postagem.", {
+          autoClose: 5000,
+          position: "top-right",
+        });
       }
     }
 
