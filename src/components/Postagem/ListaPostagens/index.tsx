@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContextValue";
 import type Postagem from "../../../models/Postagem";
 import { buscar } from "../../../services/service";
 import CardPostagem from "../CardPostagem";
@@ -18,34 +18,43 @@ function ListaPostagens() {
   const token = usuario.token;
 
   useEffect(() => {
-    if (token === "") {
+    if (!token) {
       toast.warn("Você precisa estar logado!", {
         autoClose: 5000,
         position: "top-right",
       });
       navigate("/");
     }
-  }, [token]);
+  }, [navigate, token]);
 
-  useEffect(() => {
-    buscarPostagens();
-  }, [postagens.length]);
+  const buscarPostagens = useCallback(async () => {
+    await Promise.resolve();
+    setIsLoading(true);
 
-  async function buscarPostagens() {
     try {
-      setIsLoading(true);
-
       await buscar("/postagens", setPostagens, {
         headers: { Authorization: token },
       });
-    } catch (error: any) {
-      if (error.toString().includes("401")) {
+    } catch (error: unknown) {
+      if (String(error).includes("401")) {
         handleLogout();
       }
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [handleLogout, token]);
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      void buscarPostagens();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [buscarPostagens, token]);
 
   return (
     <>
