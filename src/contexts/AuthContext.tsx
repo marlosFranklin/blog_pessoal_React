@@ -1,14 +1,8 @@
-import React, { useState, useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type UsuarioLogin from "../models/UsuarioLogin";
 import { login } from "../services/service";
 import { Bounce, toast } from "react-toastify";
-
-interface AuthContextProps {
-  usuario: UsuarioLogin;
-  handleLogout(): void;
-  handleLogin(usuario: UsuarioLogin): Promise<void>;
-  isLoading: boolean;
-}
+import { AuthContext } from "./AuthContextValue";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -23,22 +17,21 @@ const usuarioInicial: UsuarioLogin = {
   token: "",
 };
 
-export const AuthContext = React.createContext<AuthContextProps>(
-  {} as AuthContextProps,
-);
-
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [usuario, setUsuario] = useState<UsuarioLogin>(usuarioInicial);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // Recupera o usuário salvo quando a aplicação inicia
-  useEffect(() => {
+  const [usuario, setUsuario] = useState<UsuarioLogin>(() => {
     const usuarioStorage = localStorage.getItem("usuario");
 
-    if (usuarioStorage) {
-      setUsuario(JSON.parse(usuarioStorage));
+    if (!usuarioStorage) {
+      return usuarioInicial;
     }
-  }, []);
+
+    try {
+      return JSON.parse(usuarioStorage) as UsuarioLogin;
+    } catch {
+      return usuarioInicial;
+    }
+  });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   async function handleLogin(usuarioLogin: UsuarioLogin) {
     setIsLoading(true);
@@ -46,18 +39,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       await login("/usuarios/logar", usuarioLogin, setUsuario);
 
-      const usuarioAtualizado = localStorage.getItem("usuario");
-
-      if (!usuarioAtualizado) {
-      }
-
       toast.success("O Usuário foi autenticado com sucesso!", {
         position: "top-right",
         autoClose: 5000,
         theme: "colored",
         transition: Bounce,
       });
-    } catch (error) {
+    } catch {
       toast.error("Erro ao efetuar o Login, tente novamente", {
         position: "top-right",
         autoClose: 5000,

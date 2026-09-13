@@ -20,7 +20,7 @@ function Cadastro() {
     if (usuario.id !== 0) {
       navigate("/");
     }
-  }, [usuario]);
+  }, [navigate, usuario.id]);
 
   function retornar() {
     navigate("/");
@@ -43,7 +43,7 @@ function Cadastro() {
       try {
         await cadastrarUsuario(`/usuarios/cadastrar`, usuario, setUsuario);
         alert("Usuário cadastrado com sucesso!");
-      } catch (error) {
+      } catch {
         alert("Erro ao cadastrar o usuário!");
       }
     } else {

@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContextValue";
 import { toast } from "react-toastify";
 
 function Perfil() {
@@ -17,7 +17,7 @@ function Perfil() {
       });
       navigate("/");
     }
-  }, [usuario.token]);
+  }, [navigate, usuario.token]);
 
   return (
     <div className="flex justify-center mx-4">

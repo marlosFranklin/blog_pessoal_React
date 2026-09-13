@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -7,7 +8,7 @@ import {
 } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContextValue";
 import type Postagem from "../../../models/Postagem";
 import type Tema from "../../../models/Tema";
 import { atualizar, buscar, cadastrar } from "../../../services/service";
@@ -29,41 +30,47 @@ function FormPostagem() {
 
   const { id } = useParams<{ id: string }>();
 
-  async function buscarPostagemPorId(id: string) {
-    try {
-      await buscar(`/postagens/${id}`, setPostagem, {
-        headers: { Authorization: token },
-      });
-    } catch (error: any) {
-      if (error.toString().includes("401")) {
-        handleLogout();
+  const buscarPostagemPorId = useCallback(
+    async (postagemId: string) => {
+      try {
+        await buscar(`/postagens/${postagemId}`, setPostagem, {
+          headers: { Authorization: token },
+        });
+      } catch (error: unknown) {
+        if (String(error).includes("401")) {
+          handleLogout();
+        }
       }
-    }
-  }
+    },
+    [handleLogout, token],
+  );
 
-  async function buscarTemaPorId(id: string) {
-    try {
-      await buscar(`/temas/${id}`, setTema, {
-        headers: { Authorization: token },
-      });
-    } catch (error: any) {
-      if (error.toString().includes("401")) {
-        handleLogout();
+  const buscarTemaPorId = useCallback(
+    async (temaId: string) => {
+      try {
+        await buscar(`/temas/${temaId}`, setTema, {
+          headers: { Authorization: token },
+        });
+      } catch (error: unknown) {
+        if (String(error).includes("401")) {
+          handleLogout();
+        }
       }
-    }
-  }
+    },
+    [handleLogout, token],
+  );
 
-  async function buscarTemas() {
+  const buscarTemas = useCallback(async () => {
     try {
       await buscar("/temas", setTemas, {
         headers: { Authorization: token },
       });
-    } catch (error: any) {
-      if (error.toString().includes("401")) {
+    } catch (error: unknown) {
+      if (String(error).includes("401")) {
         handleLogout();
       }
     }
-  }
+  }, [handleLogout, token]);
 
   useEffect(() => {
     if (token === "") {
@@ -81,22 +88,19 @@ function FormPostagem() {
 
       navigate("/");
     }
-  }, [token]);
+  }, [navigate, token]);
 
   useEffect(() => {
-    buscarTemas();
+    if (!token) {
+      return;
+    }
+
+    void buscarTemas();
 
     if (id !== undefined) {
-      buscarPostagemPorId(id);
+      void buscarPostagemPorId(id);
     }
-  }, [id]);
-
-  useEffect(() => {
-    setPostagem({
-      ...postagem,
-      tema: tema,
-    });
-  }, [tema]);
+  }, [buscarPostagemPorId, buscarTemas, id, token]);
 
   function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
     setPostagem({
@@ -115,9 +119,14 @@ function FormPostagem() {
     e.preventDefault();
     setIsLoading(true);
 
+    const postagemParaSalvar = {
+      ...postagem,
+      tema,
+    };
+
     if (id !== undefined) {
       try {
-        await atualizar(`/postagens`, postagem, setPostagem, {
+        await atualizar(`/postagens`, postagemParaSalvar, setPostagem, {
           headers: {
             Authorization: token,
           },
@@ -134,8 +143,8 @@ function FormPostagem() {
           theme: "colored",
           transition: Bounce,
         });
-      } catch (error: any) {
-        if (error.toString().includes("401")) {
+      } catch (error: unknown) {
+        if (String(error).includes("401")) {
           handleLogout();
         } else {
           toast.error("Erro ao atualizar a Postagem", {
@@ -153,7 +162,7 @@ function FormPostagem() {
       }
     } else {
       try {
-        await cadastrar(`/postagens`, postagem, setPostagem, {
+        await cadastrar(`/postagens`, postagemParaSalvar, setPostagem, {
           headers: {
             Authorization: token,
           },
@@ -169,8 +178,8 @@ function FormPostagem() {
           theme: "colored",
           transition: Bounce,
         });
-      } catch (error: any) {
-        if (error.toString().includes("401")) {
+      } catch (error: unknown) {
+        if (String(error).includes("401")) {
           handleLogout();
         } else {
           toast.error("Erro ao cadastrar a Postagem", {

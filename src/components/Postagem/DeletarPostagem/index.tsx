@@ -1,6 +1,6 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContextValue";
 import type Postagem from "../../../models/Postagem";
 
 import { ClipLoader } from "react-spinners";
@@ -18,19 +18,22 @@ function DeletarPostagem() {
   const { usuario, handleLogout } = useContext(AuthContext);
   const token = usuario.token;
 
-  async function buscarPorId(id: string) {
-    try {
-      await buscar(`/postagens/${id}`, setPostagem, {
-        headers: {
-          Authorization: token,
-        },
-      });
-    } catch (error: any) {
-      if (error.toString().includes("401")) {
-        handleLogout();
+  const buscarPorId = useCallback(
+    async (postagemId: string) => {
+      try {
+        await buscar(`/postagens/${postagemId}`, setPostagem, {
+          headers: {
+            Authorization: token,
+          },
+        });
+      } catch (error: unknown) {
+        if (String(error).includes("401")) {
+          handleLogout();
+        }
       }
-    }
-  }
+    },
+    [handleLogout, token],
+  );
 
   useEffect(() => {
     if (token === "") {
@@ -40,13 +43,13 @@ function DeletarPostagem() {
       });
       navigate("/");
     }
-  }, [token]);
+  }, [navigate, token]);
 
   useEffect(() => {
     if (id !== undefined) {
-      buscarPorId(id);
+      void buscarPorId(id);
     }
-  }, [id]);
+  }, [buscarPorId, id]);
 
   async function deletarPostagem() {
     setIsLoading(true);
@@ -62,8 +65,8 @@ function DeletarPostagem() {
         autoClose: 5000,
         position: "top-right",
       });
-    } catch (error: any) {
-      if (error.toString().includes("401")) {
+    } catch (error: unknown) {
+      if (String(error).includes("401")) {
         handleLogout();
       } else {
         toast.error("Erro ao deletar a postagem.", {

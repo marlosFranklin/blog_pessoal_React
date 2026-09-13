@@ -1,9 +1,9 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { ClipLoader } from "react-spinners";
 import type Tema from "../../../models/Tema";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContextValue";
 import { buscar, deletar } from "../../../services/service";
 import { Bounce, toast } from "react-toastify";
 
@@ -19,19 +19,22 @@ function DeletarTema() {
 
   const { id } = useParams<{ id: string }>();
 
-  async function buscarPorId(id: string) {
-    try {
-      await buscar(`/temas/${id}`, setTema, {
-        headers: {
-          Authorization: token,
-        },
-      });
-    } catch (error: any) {
-      if (error.toString().includes("401")) {
-        handleLogout();
+  const buscarPorId = useCallback(
+    async (temaId: string) => {
+      try {
+        await buscar(`/temas/${temaId}`, setTema, {
+          headers: {
+            Authorization: token,
+          },
+        });
+      } catch (error: unknown) {
+        if (String(error).includes("401")) {
+          handleLogout();
+        }
       }
-    }
-  }
+    },
+    [handleLogout, token],
+  );
 
   useEffect(() => {
     if (token === "") {
@@ -41,13 +44,13 @@ function DeletarTema() {
       });
       navigate("/");
     }
-  }, [token]);
+  }, [navigate, token]);
 
   useEffect(() => {
     if (id !== undefined) {
-      buscarPorId(id);
+      void buscarPorId(id);
     }
-  }, [id]);
+  }, [buscarPorId, id]);
 
   async function deletarTema() {
     setIsLoading(true);
@@ -69,8 +72,8 @@ function DeletarTema() {
         theme: "colored",
         transition: Bounce,
       });
-    } catch (error: any) {
-      if (error.toString().includes("401")) {
+    } catch (error: unknown) {
+      if (String(error).includes("401")) {
         handleLogout();
       } else {
         toast.warn("Erro ao deletar o tema.", {

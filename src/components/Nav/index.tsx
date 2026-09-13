@@ -1,6 +1,6 @@
 import { useContext, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContextValue";
 import { toast } from "react-toastify";
 
 function Navbar() {

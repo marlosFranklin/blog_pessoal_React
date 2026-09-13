@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -8,7 +9,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import type Tema from "../../../models/Tema";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContextValue";
 import { atualizar, buscar, cadastrar } from "../../../services/service";
 import { Bounce, toast } from "react-toastify";
 
@@ -24,17 +25,20 @@ function FormTema() {
 
   const { id } = useParams<{ id: string }>();
 
-  async function buscarPorId(id: string) {
-    try {
-      await buscar(`/temas/${id}`, setTema, {
-        headers: { Authorization: token },
-      });
-    } catch (error: any) {
-      if (error.toString().includes("403")) {
-        handleLogout();
+  const buscarPorId = useCallback(
+    async (temaId: string) => {
+      try {
+        await buscar(`/temas/${temaId}`, setTema, {
+          headers: { Authorization: token },
+        });
+      } catch (error: unknown) {
+        if (String(error).includes("403")) {
+          handleLogout();
+        }
       }
-    }
-  }
+    },
+    [handleLogout, token],
+  );
 
   useEffect(() => {
     if (token === "") {
@@ -44,13 +48,13 @@ function FormTema() {
       });
       navigate("/");
     }
-  }, [token]);
+  }, [navigate, token]);
 
   useEffect(() => {
     if (id !== undefined) {
-      buscarPorId(id);
+      void buscarPorId(id);
     }
-  }, [id]);
+  }, [buscarPorId, id]);
 
   function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
     setTema({
@@ -73,8 +77,8 @@ function FormTema() {
           headers: { Authorization: token },
         });
         alert("O Tema foi atualizado com sucesso!");
-      } catch (error: any) {
-        if (error.toString().includes("401")) {
+      } catch (error: unknown) {
+        if (String(error).includes("401")) {
           handleLogout();
         } else {
           alert("Erro ao atualizar o tema.");
@@ -96,8 +100,8 @@ function FormTema() {
           theme: "colored",
           transition: Bounce,
         });
-      } catch (error: any) {
-        if (error.toString().includes("401")) {
+      } catch (error: unknown) {
+        if (String(error).includes("401")) {
           handleLogout();
         } else {
           alert("Erro ao cadastrar o tema.");

@@ -7,7 +7,7 @@ import {
 } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContextValue";
 import type UsuarioLogin from "../../models/UsuarioLogin";
 
 function Login() {
@@ -23,7 +23,7 @@ function Login() {
     if (usuario.token !== "") {
       navigate("/home");
     }
-  }, [usuario]);
+  }, [navigate, usuario.token]);
 
   function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
     setUsuarioLogin({
