@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 import type Tema from "../../../models/Tema";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContextValue";
 import { buscar } from "../../../services/service";
 import { CardTema } from "..";
 import { toast } from "react-toastify";
@@ -26,22 +26,32 @@ export function ListaTemas() {
     }
   }, [token, navigate]);
 
-  useEffect(() => {
-    buscarTemas();
-  }, [token]);
+  const buscarTemas = useCallback(async () => {
+    await Promise.resolve();
+    setIsLoading(true);
 
-  async function buscarTemas() {
     try {
-      setIsLoading(true);
       await buscar("/temas", setTemas, { headers: { Authorization: token } });
-    } catch (error: any) {
-      if (error.toString().includes("401")) {
+    } catch (error: unknown) {
+      if (String(error).includes("401")) {
         handleLogout();
       }
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [handleLogout, token]);
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      void buscarTemas();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [buscarTemas, token]);
   return (
     <>
       <div className=" flex justify-center w-full my-4  ">

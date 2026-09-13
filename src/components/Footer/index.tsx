@@ -4,10 +4,10 @@ import {
   LinkedinLogoIcon,
 } from "@phosphor-icons/react";
 import { useContext, type ReactNode } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContextValue";
 
 function Footer() {
-  let data = new Date().getFullYear();
+  const data = new Date().getFullYear();
 
   const { usuario } = useContext(AuthContext);
 

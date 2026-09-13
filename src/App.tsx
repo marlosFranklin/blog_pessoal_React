@@ -37,11 +37,6 @@ function App() {
                 element={<DeletarPostagem />}
               />
               <Route path="/perfil" element={<Perfil />} />
-              <Route
-                path="/deletarpostagem/:id"
-                element={<DeletarPostagem />}
-              />
-              <Route path="/perfil" element={<Perfil />} />
             </Routes>
           </div>
           <Footer />
